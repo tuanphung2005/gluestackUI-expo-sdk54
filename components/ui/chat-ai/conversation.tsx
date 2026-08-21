@@ -21,8 +21,14 @@ import { ArrowDown, Download } from 'lucide-react-native';
 import type { UIMessage } from 'ai';
 import { Message, MessageContent, MessageResponse } from './message';
 import { BlankProvider, useBlankContext } from './blank-context';
-import type { LegendListRef } from '@legendapp/list';
 import { AnimatedLegendList } from '@legendapp/list/reanimated';
+
+type LegendListRef = any;
+
+export type ConversationProps = {
+  children?: React.ReactNode;
+  className?: string;
+};
 
 export const Conversation = ({ children, className }: ConversationProps) => (
   <BlankProvider>
@@ -116,8 +122,8 @@ export const ConversationContent = ({
           data={messages}
         keyboardDismissMode={Platform.OS === 'ios' ? 'interactive' : 'on-drag'}
           showsVerticalScrollIndicator={false}
-          renderItem={renderItem || defaultRenderItem}
-          keyExtractor={(item) => item.id}
+          renderItem={(renderItem || defaultRenderItem) as any}
+          keyExtractor={(item: any) => item.id}
           scrollEventThrottle={16}
           estimatedItemSize={estimatedItemSize}
           removeClippedSubviews={Platform.OS !== 'web'}
@@ -127,7 +133,7 @@ export const ConversationContent = ({
           contentContainerStyle={{
             paddingBottom: blankSize.value,
           }}
-          {...flatListProps}
+          {...(flatListProps as any)}
         />
       )}
     </View>

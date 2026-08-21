@@ -88,16 +88,16 @@ export const ModelSelectorTrigger = ({
 }: ModelSelectorTriggerProps) => {
   const { onOpenChange } = useModelSelector();
 
-  const handlePress = () => {
+  const handlePress = (e?: any) => {
     onOpenChange(true);
-    userOnPress?.();
+    (userOnPress as any)?.(e);
   };
 
   if (asChild && isValidElement(children)) {
     return cloneElement(children, {
       ...props,
       onPress: handlePress,
-      className: `${children.props.className || ''} ${className || ''}`,
+      className: `${(children.props as any)?.className || ''} ${className || ''}`,
     } as any);
   }
 
@@ -135,7 +135,7 @@ export const ModelSelectorContent = ({
       </ModalCloseButton>
     </ModalHeader>
     <ScrollView className="max-h-[500px]">
-      <ModalBody>{children}</ModalBody>
+      <ModalBody>{children as any}</ModalBody>
     </ScrollView>
   </ModalContent>
 );

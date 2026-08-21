@@ -90,7 +90,7 @@ export const Message = memo(
       return (
         <MessageContext.Provider value={contextValue}>
           <Animated.View
-            ref={combinedRef}
+            ref={combinedRef as any}
             onLayout={(event) => {
               animOnLayout?.(event);
               blankOnLayout?.(event);
@@ -107,7 +107,7 @@ export const Message = memo(
     return (
       <MessageContext.Provider value={contextValue}>
         <Animated.View
-          ref={blankRef}
+          ref={blankRef as any}
           onLayout={blankOnLayout}
           className={`group flex w-full max-w-[95%] flex-col gap-2 ${className || ''}`}
         >
@@ -136,8 +136,8 @@ export const MessageContent = memo(
 );
 
 export const MessageResponse = memo(({ message }: { message: UIMessage }) => {
-  const markdownRules = {
-    text: (node, children, parent) => {
+  const markdownRules: any = {
+    text: (node: any) => {
       return (
         <Text key={node.key} className="text-lg text-foreground ">
           {node.content}
@@ -145,7 +145,7 @@ export const MessageResponse = memo(({ message }: { message: UIMessage }) => {
       );
     },
 
-    ordered_list: (node, children) => {
+    ordered_list: (node: any, children: any) => {
       return (
         <View key={node.key} className="mb-2">
           {children}
@@ -153,7 +153,7 @@ export const MessageResponse = memo(({ message }: { message: UIMessage }) => {
       );
     },
 
-    list_item: (node, children, parent) => {
+    list_item: (node: any, children: any, parent: any) => {
       const isOrdered = parent?.type === 'ordered_list';
       const index = node.index ?? 0;
       return (
@@ -168,7 +168,7 @@ export const MessageResponse = memo(({ message }: { message: UIMessage }) => {
       );
     },
 
-    paragraph: (node, children) => {
+    paragraph: (node: any, children: any) => {
       return (
         <View key={node.key} className="">
           {children}
@@ -176,31 +176,31 @@ export const MessageResponse = memo(({ message }: { message: UIMessage }) => {
       );
     },
 
-    strong: (node, children) => (
+    strong: (node: any, children: any) => (
       <Text key={node.key} className="font-bold text-foreground">
         {children}
       </Text>
     ),
 
-    em: (node, children) => (
+    em: (node: any, children: any) => (
       <Text key={node.key} className="italic text-foreground">
         {children}
       </Text>
     ),
 
-    fence: (node) => (
+    fence: (node: any) => (
       <View key={node.key} className="rounded-xl p-3 my-2 bg-muted">
         <Text className="text-white font-mono text-sm">{node.content}</Text>
       </View>
     ),
 
-    code_block: (node) => (
+    code_block: (node: any) => (
       <View className="bg-slate-900 rounded-xl p-3 my-2" key={node.key}>
         <Text className="text-white font-mono text-sm">{node.content}</Text>
       </View>
     ),
 
-    code_inline: (node) => (
+    code_inline: (node: any) => (
       <Text
         key={node.key}
         className="bg-slate-800 text-white px-1 py-0.5 rounded"
@@ -211,11 +211,11 @@ export const MessageResponse = memo(({ message }: { message: UIMessage }) => {
   };
 
   if (!message?.parts) {
-    return <Markdown rules={markdownRules}>{message?.content || ''}</Markdown>;
+    return <Markdown rules={markdownRules}>{(message as any)?.content || ''}</Markdown>;
   }
 
-  const hasText = message.parts.some((p) => p.type === 'text');
-  const hasFile = message.parts.some((p) => p.type === 'file');
+  const hasText = message.parts.some((p: any) => p.type === 'text');
+  const hasFile = message.parts.some((p: any) => p.type === 'file');
 
   if (!hasText && !hasFile) {
     return <Text className="text-muted-foreground">Thinking...</Text>;
@@ -223,7 +223,7 @@ export const MessageResponse = memo(({ message }: { message: UIMessage }) => {
 
   return (
     <View className="gap-2">
-      {message.parts.map((part, index) => {
+      {message.parts.map((part: any, index: number) => {
         if (part.type === 'text') {
           return (
             <Markdown key={index} rules={markdownRules}>
@@ -386,16 +386,16 @@ export const MessageBranchContent = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const { currentBranch, setBranches } = useMessageBranch();
+  const { currentBranch, setBranches, totalBranches } = useMessageBranch();
   const childrenArray = React.Children.toArray(
     children
   ) as React.ReactElement[];
 
   React.useEffect(() => {
-    if (branches.length !== childrenArray.length) {
+    if (totalBranches !== childrenArray.length) {
       setBranches(childrenArray);
     }
-  }, [childrenArray, branches.length]);
+  }, [childrenArray, totalBranches, setBranches]);
 
   return childrenArray.map((branch, index) => (
     <View

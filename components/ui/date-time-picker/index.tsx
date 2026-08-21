@@ -521,7 +521,7 @@ type IDateTimePickerIconProps = VariantProps<typeof dateTimePickerIconStyle> &
   React.ComponentProps<typeof UIDateTimePicker.Icon> & { className?: string };
 
 const DateTimePickerIcon = React.forwardRef<
-  React.ComponentRef<typeof UIDateTimePicker.Icon>,
+  any,
   IDateTimePickerIconProps
 >(function DateTimePickerIcon({ className, size, ...props }, ref) {
   const { size: parentSize } = useStyleContext(SCOPE);

@@ -18,6 +18,9 @@ export default function Home() {
         <Button size="default">
           <ButtonText>Get Started</ButtonText>
         </Button>
+        <Text>
+          hello :)
+        </Text>
       </Center>
     </ScrollView>
   );

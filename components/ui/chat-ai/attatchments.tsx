@@ -113,7 +113,7 @@ export const Attachments = ({
             height: 80,
           }}
           className={`${className} bg-muted `}
-          {...props}
+          {...(props as any)}
         >
           {children}
         </ScrollView>
@@ -305,7 +305,7 @@ export const AttachmentHoverCard = ({
         if (React.isValidElement(triggerElement)) {
           return React.cloneElement(triggerElement, {
             ...triggerProps,
-            ...triggerElement.props,
+            ...(triggerElement.props as object),
           });
         }
         return triggerElement;

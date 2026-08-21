@@ -102,7 +102,7 @@ export const PromptInputProvider = ({ children }: { children: ReactNode }) => {
 
         return {
           id: generateId(),
-          filename: asset.fileName || asset.name || `image-${Date.now()}.jpg`,
+          filename: asset.fileName || (asset as any).name || `image-${Date.now()}.jpg`,
           mediaType: asset.mimeType || 'image/jpeg',
           type: 'file' as const,
           url,

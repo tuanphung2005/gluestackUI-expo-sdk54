@@ -119,9 +119,8 @@ const DateTimePicker = React.forwardRef<
             <View className="mb-4">
               <Calendar
                 mode="single"
-                selected={tempDate}
-                onSelect={handleDateSelect}
-                initialDate={tempDate}
+                value={tempDate}
+                onValueChange={handleDateSelect}
                 minDate={minimumDate}
                 maxDate={maximumDate}
               />

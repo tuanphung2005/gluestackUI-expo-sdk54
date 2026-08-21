@@ -24,15 +24,7 @@ const LabelWrapper = React.forwardRef<
 
 const StyledUIIcon = withUniwind(UIIcon);
 
-const IconWrapper = React.forwardRef<
-  React.ComponentRef<typeof UIIcon>,
-  React.ComponentPropsWithoutRef<typeof UIIcon>
->(function IconWrapper({ ...props }, ref) {
-  return <StyledUIIcon {...props} ref={ref} />;
-});
-
 const SCOPE = 'CHECKBOX';
-
 
 const UICheckbox = createCheckbox({
   // @ts-expect-error : internal implementation for r-19/react-native-web
@@ -41,7 +33,7 @@ const UICheckbox = createCheckbox({
       ? withStyleContext(View, SCOPE)
       : withStyleContext(Pressable, SCOPE),
   Group: View,
-  Icon: IconWrapper,
+  Icon: StyledUIIcon,
   Label: LabelWrapper,
   Indicator: IndicatorWrapper,
 });
@@ -120,7 +112,11 @@ const CheckboxLabel = React.forwardRef<
 type ICheckboxIconProps = React.ComponentPropsWithoutRef<
   typeof UICheckbox.Icon
 > &
-  VariantProps<typeof checkboxIconStyle>;
+  VariantProps<typeof checkboxIconStyle> & {
+    height?: number | string;
+    width?: number | string;
+    size?: number | string;
+  };
 
 const CheckboxIcon = React.forwardRef<
   React.ComponentRef<typeof UICheckbox.Icon>,

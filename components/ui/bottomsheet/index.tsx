@@ -61,7 +61,7 @@ const bottomSheetTextInputStyle = tva({
 });
 
 type BottomSheetContextValue = {
-  bottomSheetRef: React.RefObject<GorhomBottomSheet>;
+  bottomSheetRef: React.RefObject<GorhomBottomSheet | null>;
   handleClose: () => void;
   handleOpen: (index?: number) => void;
   isVisible: boolean;
@@ -70,7 +70,7 @@ type BottomSheetContextValue = {
 };
 
 const BottomSheetContext = createContext<BottomSheetContextValue>({
-  bottomSheetRef: { current: null! },
+  bottomSheetRef: { current: null },
   handleClose: () => { },
   handleOpen: () => { },
   isVisible: false,
@@ -214,7 +214,7 @@ export const BottomSheetPortal = ({
 
   // Defensive index check to prevent Invariant Violation
   const validIndex =
-    memoizedSnapPoints && memoizedSnapPoints.length > 0
+    memoizedSnapPoints && Array.isArray(memoizedSnapPoints) && memoizedSnapPoints.length > 0
       ? Math.min(currentIndex, memoizedSnapPoints.length - 1)
       : currentIndex;
 
@@ -225,9 +225,9 @@ export const BottomSheetPortal = ({
         snapPoints={memoizedSnapPoints}
         index={validIndex}
         enableDynamicSizing={enableDynamicSizing}
-        onChange={(idx) => {
+        onChange={(idx: number, ...rest: any[]) => {
           handleSheetChanges(idx);
-          onChange?.(idx);
+          (onChange as any)?.(idx, ...rest);
         }}
         enablePanDownToClose={enablePanDownToClose}
         // @ts-ignore
@@ -265,7 +265,9 @@ export const BottomSheetTrigger = ({
   );
 };
 
-type IBottomSheetBackdropProps = BottomSheetBackdropProps & {
+type IBottomSheetBackdropProps = React.ComponentProps<
+  typeof GorhomBottomSheetBackdrop
+> & {
   className?: string;
 };
 
@@ -285,7 +287,7 @@ export const BottomSheetBackdrop = ({
       appearsOnIndex={appearsOnIndex}
       opacity={opacity}
       pressBehavior={pressBehavior}
-      {...props}
+      {...(props as any)}
     />
   );
 };
@@ -307,7 +309,7 @@ export const BottomSheetDragIndicator = ({
 }: Partial<IBottomSheetHandleProps>) => {
   return (
     <StyledGorhomBottomSheetHandle
-      {...props}
+      {...(props as any)}
       // @ts-ignore
       className={bottomSheetHandleStyle({ className })}
     >
@@ -406,14 +408,14 @@ export const BottomSheetItem = ({
 }: IBottomSheetItemProps) => {
   const { handleClose } = useContext(BottomSheetContext);
 
-  const Pressable = Platform.OS === 'web' ? RNPressable : StyledGGHPressable;
+  const Pressable: any = Platform.OS === 'web' ? RNPressable : StyledGGHPressable;
 
   return (
     <Pressable
       {...props}
       // @ts-ignore
       className={bottomSheetItemStyle({ className })}
-      onPress={(e) => {
+      onPress={(e: any) => {
         props.onPress?.(e);
         if (closeOnSelect) {
           handleClose();

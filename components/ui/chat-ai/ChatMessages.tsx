@@ -1,6 +1,6 @@
 'use client';
 import React, { useContext } from 'react';
-import { LegendList, LegendListProps } from '@legendapp/list';
+import { LegendList, LegendListProps } from '@legendapp/list/react-native';
 import { ChatContext } from './context';
 import { ChatMessage as ChatMessageComponent } from './ChatMessage';
 import { ChatMessage as ChatMessageType } from './types';
