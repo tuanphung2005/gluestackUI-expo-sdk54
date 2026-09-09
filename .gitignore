@@ -5,8 +5,14 @@ web-build/
 .expo-shared/
 
 # Native builds (if generated)
-# /android
-# /ios
+/android
+/ios
+android/.gradle/
+android/app/build/
+android/build/
+*.apk
+*.aab
+.eas/
 
 # Logs
 npm-debug.*
